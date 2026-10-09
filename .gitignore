@@ -1,0 +1,10 @@
+node_modules
+dist
+.DS_Store
+.env
+
+# Rendered videos/stills — local only (regenerate with npm run render / still).
+out/
+
+# Local-only reference material (screenshots, briefs, inspiration).
+references/
