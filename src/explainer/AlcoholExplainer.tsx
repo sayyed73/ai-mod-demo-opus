@@ -10,10 +10,33 @@ import {
 } from "remotion";
 import { Captions } from "./Captions";
 import { explainer, shots, sourceNote, stat } from "./config";
+import { words } from "./words";
 
 const CLIP_SEC = 5.0; // usable length of each generated clip
 
 const hasFile = (p: string) => getStaticFiles().some((f) => f.name === p);
+
+/**
+ * Per-frame music gain: dips while Helena speaks, swells back in the pauses
+ * (smoothed so it breathes rather than pumps).
+ */
+const musicGain: number[] = (() => {
+  const fps = explainer.fps;
+  const n = Math.round(explainer.durationSec * fps);
+  const target = Array.from({ length: n }, (_, f) => {
+    const t = f / fps;
+    const speaking = words.some(([, s, e]) => t >= s - 0.15 && t <= e + 0.2);
+    return speaking ? explainer.musicDuck : 1;
+  });
+  const out: number[] = [];
+  let g = 1;
+  for (let f = 0; f < n; f++) {
+    const k = target[f] < g ? 0.25 : 0.06; // fast dip, slow swell
+    g += (target[f] - g) * k;
+    out.push(g);
+  }
+  return out;
+})();
 
 /** One shot: cropped into the picture window, slow push-in, crossfades in. */
 const Shot: React.FC<{ i: number; slotSec: number }> = ({ i, slotSec }) => {
@@ -142,12 +165,14 @@ export const AlcoholExplainer: React.FC = () => {
         {sourceNote.text}
       </div>
 
-      {hasFile(explainer.narration) ? <Audio src={staticFile(explainer.narration)} /> : null}
+      {hasFile(explainer.narration) ? <Audio src={staticFile(explainer.narration)} volume={0.88} /> : null}
       {hasFile(explainer.music) ? (
         <Audio
           src={staticFile(explainer.music)}
           volume={(f) =>
-            interpolate(f, [0, fps, durationInFrames - 2 * fps, durationInFrames - 1], [0, explainer.musicVolume, explainer.musicVolume, 0], {
+            explainer.musicVolume *
+            (musicGain[f] ?? 1) *
+            interpolate(f, [0, 0.3 * fps, durationInFrames - 1.5 * fps, durationInFrames - 1], [0, 1, 1, 0], {
               extrapolateLeft: "clamp",
               extrapolateRight: "clamp",
             })

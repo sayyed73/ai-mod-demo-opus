@@ -12,7 +12,9 @@ export const explainer = {
   durationSec: 61.5,
   narration: "explainer/alcohol/narration.mp3",
   music: "explainer/alcohol/music.wav",
-  musicVolume: 0.24,
+  /** Music level in pauses; it dips to `musicDuck` × this while Helena speaks. */
+  musicVolume: 1,
+  musicDuck: 0.4,
   /** Picture window inside the 9:16 frame (black above and below, like the reference). */
   picture: { width: 1080, height: 960 },
   crossfadeSec: 0.35,
