@@ -101,4 +101,17 @@ Missing audio files are skipped, never fatal.
 - Remotion has its own licence: free for individuals and small teams; larger
   companies need a company licence — see https://www.remotion.dev/license.
 
+## Second video: narrated explainer (`AlcoholExplainer`)
+
+A 61.5 s, 1080×1920 faceless explainer ("Why is it so hard to put the glass down?") in
+`src/explainer/`: 16 AI clips (Higgsfield, Kling 3.0 Pro), an ElevenLabs narration
+(voice "Helena"), word-by-word captions and original synthesised music.
+
+```bash
+scripts/fetch-alcohol-clips.sh   # clips are git-ignored (~105 MB)
+npm run render:alcohol           # → out/alcohol-explainer.mp4
+```
+Shot timing, framing and on-screen text: `src/explainer/config.ts`. Caption timings:
+`src/explainer/words.ts`. Music: `npm run music:alcohol`.
+
 More: [CLAUDE.md](CLAUDE.md) (conventions) · [docs/github-setup.md](docs/github-setup.md).

@@ -8,3 +8,6 @@ out/
 
 # Local-only reference material (screenshots, briefs, inspiration).
 references/
+
+# Generated video clips for the explainer (re-download: scripts/fetch-alcohol-clips.sh)
+public/explainer/*/clips/

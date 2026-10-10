@@ -3,6 +3,8 @@ import { approvedOrderFrame, sceneOrder, scenes, totalFrames } from "./config/ti
 import { video } from "./config/video";
 import { ProductDemo, SceneOnly } from "./compositions/ProductDemo";
 import { loadBrandFonts } from "./lib/fonts";
+import { AlcoholExplainer } from "./explainer/AlcoholExplainer";
+import { explainer } from "./explainer/config";
 
 loadBrandFonts();
 
@@ -28,6 +30,18 @@ export const RemotionRoot: React.FC = () => (
 
     {/* Still used by `npm run still` (frame derived from timing.ts). */}
     <Still id="ApprovedOrderStill" component={ApprovedOrder} width={video.width} height={video.height} />
+
+    {/* Narrated explainer (separate project — see src/explainer/). */}
+    <Folder name="Explainers">
+      <Composition
+        id={explainer.id}
+        component={AlcoholExplainer}
+        durationInFrames={Math.round(explainer.durationSec * explainer.fps)}
+        fps={explainer.fps}
+        width={explainer.width}
+        height={explainer.height}
+      />
+    </Folder>
 
     {/* Each scene on its own, handy while editing in Studio. */}
     <Folder name="Scenes">

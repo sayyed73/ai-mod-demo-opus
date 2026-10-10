@@ -29,6 +29,8 @@
     "render": "remotion render ProductDemo out/inboxpilot-demo.mp4 --codec=h264",
     "still": "remotion still ApprovedOrderStill out/approved-order.png",
     "build": "remotion bundle",
-    "upgrade": "remotion upgrade"
+    "upgrade": "remotion upgrade",
+    "render:alcohol": "remotion render AlcoholExplainer out/alcohol-explainer.mp4 --codec=h264",
+    "music:alcohol": "node scripts/generate-explainer-music.mjs"
   }
 }
